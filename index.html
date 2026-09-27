@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#101711">
+    <meta name="description" content="H9 Invest · conto demo e portafoglio.">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+    <link rel="stylesheet" href="./style.css">
+    <title>H9 Invest</title>
+  </head>
+  <body>
+    <main class="auth-screen" id="auth-screen">
+      <div class="brand auth-brand"><span class="brand-mark">H9</span><span>H9 <b>INVEST</b></span></div>
+      <div class="test-banner"><span>DEMO FRONTEND</span> Demo accounts and balances are saved in this browser.</div>
+      <section class="auth-card">
+        <div id="auth-entry">
+          <div class="auth-heading"><p class="eyebrow">YOUR INVESTMENT ACCOUNT</p><h1 id="auth-title">Welcome back</h1><p id="auth-subtitle">Sign in to your H9 account.</p></div>
+          <div class="auth-switch" id="auth-switch">
+            <button class="selected" id="show-login" type="button">Log in</button>
+            <button id="show-register" type="button">Create account</button>
+          </div>
+          <form id="login-form" class="auth-form">
+            <label for="login-email">Email</label>
+            <input id="login-email" type="email" autocomplete="email" placeholder="name@email.com" required>
+            <label for="login-password">Password</label>
+            <input id="login-password" type="password" autocomplete="current-password" placeholder="Your password" required>
+            <p class="form-error" id="login-error" role="alert"></p>
+            <button class="primary-button" type="submit">Log in</button>
+          </form>
+          <form id="register-form" class="auth-form" hidden>
+            <label for="register-username">Username</label>
+            <input id="register-username" type="text" minlength="3" maxlength="30" autocomplete="username" placeholder="Choose a username" required>
+            <label for="register-email">Email</label>
+            <input id="register-email" type="email" autocomplete="email" placeholder="name@email.com" required>
+            <label for="register-password">Password</label>
+            <input id="register-password" type="password" minlength="8" autocomplete="new-password" placeholder="At least 8 characters" required>
+            <label for="register-confirm">Confirm password</label>
+            <input id="register-confirm" type="password" minlength="8" autocomplete="new-password" placeholder="Enter your password again" required>
+            <label for="register-referral">Referral code (optional)</label>
+            <input id="register-referral" type="text" autocomplete="off" placeholder="Enter a referral code">
+            <p class="form-error" id="register-error" role="alert"></p>
+            <button class="primary-button" type="submit">Create account</button>
+          </form>
+        </div>
+      </section>
+      <p class="auth-footnote">Use your H9 credentials to sign in again from this browser.</p>
+    </main>
+
+    <main class="app-shell" id="app-shell" hidden>
+      <header class="topbar">
+        <a class="brand" id="home-link" href="#home" aria-label="H9 Invest, home"><span class="brand-mark">H9</span><span>H9 <b>INVEST</b></span></a>
+        <div class="topbar-actions"><span class="user-chip" id="user-chip">—</span><button class="icon-button notification-button" id="open-notifications" type="button" aria-label="Notifications" title="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-5 3V7a2 2 0 0 1 1-2m1 3v1l7 5 7-5V8l-7 5z"/></svg><i id="notification-dot" hidden></i></button><button class="icon-button" id="refresh-account" type="button" aria-label="Refresh account" title="Refresh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.93 9h-2.02A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z"/></svg></button></div>
+      </header>
+      <div class="test-banner app-banner"><span>DEMO FRONTEND</span> Demo balances and transactions; no cryptocurrency is transferred.</div>
+
+      <section class="view active" id="view-home" aria-labelledby="home-title">
+        <div class="page-heading"><div><p class="eyebrow">YOUR ACCOUNT</p><h1 id="home-title">Home</h1></div></div>
+        <section class="balance-card">
+          <div class="balance-heading"><span>Total balance</span><span class="secure-badge">USDT · DEMO</span></div>
+          <p class="balance-total" id="total-balance">0,00 USDT</p>
+          <div class="balance-breakdown">
+            <div><span>Deposit balance</span><b id="deposit-balance">0.00 USDT</b><small>Available for investments only</small></div>
+            <div><span>Earnings balance</span><b class="green" id="earnings-balance">0.00 USDT</b><small>Withdrawable in demo mode</small></div>
+            <div><span>Invested capital</span><b id="locked-balance">0.00 USDT</b><small>Returned at maturity</small></div>
+          </div>
+        </section>
+        <div class="action-grid">
+          <button class="action-tile" type="button" data-open="deposit-dialog"><span class="action-symbol">↓</span><b>Deposit USDT</b></button>
+          <button class="action-tile" type="button" data-open="withdraw-dialog"><span class="action-symbol">↑</span><b>Withdraw earnings</b></button>
+          <button class="action-tile wide-tile" type="button" data-go="catalog"><span class="action-symbol">↗</span><b>Choose an investment plan</b><span class="tile-arrow">→</span></button>
+        </div>
+        <section class="section-block">
+          <div class="section-heading"><div><p class="eyebrow">INVESTED CAPITAL</p><h2>Active investments</h2></div><button class="text-link" type="button" data-go="investments">View all <span>→</span></button></div>
+          <div class="investment-list" id="home-investments"></div>
+          <div class="empty-card" id="home-investments-empty"><span class="empty-icon">↗</span><b>No active investments</b><p>Add demo funds and choose a plan.</p><button class="primary-button compact-button" type="button" data-go="catalog">View plans</button></div>
+        </section>
+        <section class="section-block">
+          <div class="section-heading"><div><p class="eyebrow">ACCOUNT ACTIVITY</p><h2>Recent activity</h2></div></div>
+          <div class="activity-list" id="recent-activity"></div>
+          <div class="empty-card compact-empty" id="activity-empty"><b>No transactions yet</b><p>Demo deposits, investments and withdrawals will appear here.</p></div>
+        </section>
+        <section class="section-block">
+          <div class="section-heading"><div><p class="eyebrow">PRESET PLANS</p><h2>Invest</h2></div><button class="text-link" type="button" data-go="catalog">Plans <span>→</span></button></div>
+          <div class="plan-list compact-plans" id="home-plans"></div>
+        </section>
+      </section>
+
+      <section class="view" id="view-catalog" aria-labelledby="catalog-title">
+        <div class="page-heading"><div><p class="eyebrow">PLATFORM PLANS</p><h1 id="catalog-title">Plans</h1></div></div>
+        <section class="compound-calculator" aria-labelledby="compound-title">
+          <div class="calculator-heading"><p class="eyebrow">COMPOUND INTEREST</p><h2 id="compound-title">Simulate a plan</h2></div>
+          <div class="calculator-fields">
+            <label for="compound-principal">Initial amount (USDT)
+              <input id="compound-principal" type="number" min="0" step="any" value="1000" inputmode="decimal">
+            </label>
+            <label for="compound-rate">Daily rate (%)
+              <input id="compound-rate" type="number" min="0" step="any" value="0.79" inputmode="decimal">
+            </label>
+            <label for="compound-days">Duration (days)
+              <input id="compound-days" type="number" min="1" step="1" value="30" inputmode="numeric">
+            </label>
+          </div>
+          <div class="calculator-results" aria-live="polite">
+            <span><span>Estimated earnings</span><b id="compound-gain">0.00 USDT</b></span>
+            <span><span>Total at maturity</span><b id="compound-total">0.00 USDT</b></span>
+          </div>
+          <div class="compound-breakdown">
+            <div class="breakdown-heading">
+              <b>Daily calculation</b>
+              <small>Daily interest = starting balance × daily rate; closing balance = starting balance + daily interest.</small>
+            </div>
+            <div class="compound-table-wrap">
+              <table class="compound-table">
+                <thead><tr><th>Day</th><th>Starting balance</th><th>Daily interest</th><th>Cumulative interest</th><th>Closing balance</th></tr></thead>
+                <tbody id="compound-breakdown-rows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        <p class="page-intro">Unwithdrawn earnings compound daily. You can withdraw them anytime; principal returns to your deposit balance at maturity.</p>
+        <div class="plan-list" id="catalog-plans"></div>
+      </section>
+
+      <section class="view" id="view-investments" aria-labelledby="investments-title">
+        <div class="page-heading"><div><p class="eyebrow">CAPITAL LOCKED UNTIL MATURITY</p><h1 id="investments-title">My investments</h1></div></div>
+        <div class="investment-summary"><div><span>Active capital</span><b id="locked-total">0.00 USDT</b></div><div><span>Earnings credited</span><b class="green" id="credited-total">0.00 USDT</b></div></div>
+        <div class="section-heading"><div><p class="eyebrow">IN PROGRESS</p><h2>Active</h2></div></div>
+        <div class="investment-list" id="active-investments"></div>
+        <div class="empty-card" id="active-empty" hidden><b>No active investments</b><p>Your active investments will appear here.</p><button class="primary-button compact-button" type="button" data-go="catalog">Browse plans</button></div>
+        <div class="section-heading history-heading"><div><p class="eyebrow">PRINCIPAL RETURNED</p><h2>Completed</h2></div></div>
+        <div class="investment-list" id="ended-investments"></div>
+        <div class="empty-card" id="ended-empty"><b>No completed investments</b><p>Completed investments will be listed here.</p></div>
+      </section>
+
+      <section class="view" id="view-profile" aria-labelledby="profile-title">
+        <div class="page-heading"><div><p class="eyebrow">DEMO ACCOUNT</p><h1 id="profile-title">Profile</h1></div></div>
+        <section class="profile-card"><span class="profile-avatar" id="profile-avatar">H</span><span class="profile-user"><b id="profile-username">—</b><small id="profile-email">—</small></span><span class="verified-badge">Demo</span></section>
+        <section class="profile-balances"><div><span>Deposit balance</span><b id="profile-deposit">0.00 USDT</b><small>Not withdrawable</small></div><div><span>Earnings balance</span><b class="green" id="profile-earnings">0.00 USDT</b><small>Withdrawable in demo</small></div></section>
+        <section class="info-card"><div class="info-row"><span>Account ID</span><b id="profile-account-id">—</b></div><div class="info-row"><span>Backend</span><b>Browser demo</b></div><div class="info-row"><span>Price / network</span><b>Not verified on-chain</b></div></section>
+        <section class="settings-card">
+          <div class="section-heading settings-heading"><div><p class="eyebrow">PREFERENCES</p><h2>Settings</h2></div></div>
+          <label class="setting-row" for="language-select"><span><b>Preferred language</b><small>Choose your interface language</small></span><select id="language-select"><option value="en">English</option><option value="fr">Français</option><option value="es">Español</option><option value="de">Deutsch</option><option value="pt">Português</option><option value="hi">Hindi (India)</option><option value="zh">中文</option><option value="it">Italiano</option></select></label>
+          <label class="setting-row" for="theme-select"><span><b>Appearance</b><small>Light or dark mode</small></span><select id="theme-select"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+          <div class="setting-row wallet-setting"><span><b>Withdrawal wallet</b><small id="bound-wallet-label">No wallet linked</small></span><button class="outline-button" id="edit-wallet-button" type="button">Link wallet</button></div>
+          <button class="outline-wide" id="change-password-button" type="button">Change password</button>
+        </section>
+        <section class="section-block profile-history">
+          <div class="section-heading"><div><p class="eyebrow">ACCOUNT ACTIVITY</p><h2>Money movement history</h2></div><button class="text-link" id="profile-history-open" type="button">View all <span>→</span></button></div>
+          <div class="activity-list" id="profile-activity"></div>
+          <div class="empty-card compact-empty" id="profile-activity-empty"><b>No transactions yet</b><p>Your deposits, investments and withdrawals will appear here.</p></div>
+        </section>
+        <button class="primary-button admin-entry" id="open-admin" type="button" hidden>Open admin</button>
+        <button class="danger-button" type="button" id="logout-button">Log out</button>
+        <button class="danger-button reset-button" type="button" id="reset-test-data">Delete all demo data</button>
+        <p class="profile-note">Returns and account activity are for demonstration only. No cryptocurrency is transferred or paid.</p>
+      </section>
+
+      <section class="view" id="view-invites" aria-labelledby="invites-title">
+        <div class="page-heading"><div><p class="eyebrow">SHARE H9</p><h1 id="invites-title">Invitations & rewards</h1></div></div>
+        <section class="points-card">
+          <div><span>H9 points balance</span><b id="h9-points">0</b></div>
+          <small><span id="extra-spin-count">0</span> extra wheel spins</small>
+          <small>Invite rewards are fixed points. They never depend on an invitee’s deposits, investments, or losses.</small>
+        </section>
+        <section class="invite-card">
+          <p class="eyebrow">YOUR INVITE LINK</p>
+          <div class="invite-link-row"><input id="invite-link" type="text" readonly aria-label="Your invitation link"><button class="outline-button" id="copy-invite-link" type="button">Copy</button></div>
+          <div class="invite-stat"><span>Accepted invitations</span><b id="referral-count">0</b></div>
+          <p class="small-note">You earn 10 H9 points when someone creates an account with your code. New members get 25 points. There are no rewards tied to their investments.</p>
+        </section>
+        <section class="section-block mystery-section">
+          <div class="section-heading"><div><p class="eyebrow">DAILY SPIN + EXTRAS</p><h2>H9 mystery wheel</h2></div></div>
+          <div class="mystery-card">
+            <div class="wheel-wrap"><span class="wheel-pointer" aria-hidden="true"></span><div class="mystery-wheel" id="mystery-wheel" aria-label="Daily H9 points prize wheel with equal-size slices"><span>H9</span></div></div>
+            <div class="wheel-result" id="wheel-result">Open one mystery box each day.</div>
+            <button class="primary-button" id="spin-wheel" type="button">Open today’s mystery box</button>
+            <p class="small-note">Equal-size slices. Daily draws award one of the point prizes below.</p>
+          </div>
+          <details class="prize-odds">
+            <summary>Point prizes</summary>
+            <div id="daily-prize-odds"></div>
+            <p>Each daily draw uses the configured prize chances.</p>
+          </details>
+        </section>
+        <section class="section-block">
+          <div class="section-heading"><div><p class="eyebrow">SPEND H9 POINTS</p><h2>Benefits & coupons</h2></div></div>
+          <p class="small-note rewards-intro">Redeem points for temporary boosts or demo USDT coupon credit. Redemptions and all payouts are simulated in this browser demo.</p>
+          <div class="reward-grid" id="reward-catalog"></div>
+        </section>
+        <section class="section-block">
+          <div class="section-heading"><div><p class="eyebrow">ACTIVE BENEFITS</p><h2>Your rewards</h2></div></div>
+          <div class="reward-list" id="active-rewards"></div>
+          <div class="empty-card compact-empty" id="active-rewards-empty"><b>No active benefits</b><p>Benefits and coupon requests will appear here.</p></div>
+        </section>
+        <section class="section-block">
+          <div class="section-heading"><div><p class="eyebrow">POINTS HISTORY</p><h2>H9 activity</h2></div></div>
+          <div class="points-history" id="points-history"></div>
+          <div class="empty-card compact-empty" id="points-history-empty"><b>No points activity yet</b></div>
+        </section>
+      </section>
+
+      <section class="view" id="view-admin" aria-labelledby="admin-title">
+        <div class="page-heading"><div><p class="eyebrow">DEMO ONLY</p><h1 id="admin-title">Admin</h1></div></div>
+        <p class="page-intro">Review requests and manage demo account data.</p>
+        <div class="admin-section">
+          <div class="section-heading"><div><p class="eyebrow">REGISTERED USERS</p><h2>Manage accounts</h2></div><span class="count-pill" id="registered-user-count">0</span></div>
+          <div class="admin-queue" id="registered-users"></div>
+        </div>
+        <div class="admin-section">
+          <div class="section-heading"><div><p class="eyebrow">ACCOUNTS</p><h2>Pending</h2></div><span class="count-pill" id="pending-user-count">0</span></div>
+          <div class="admin-queue" id="pending-users"></div><div class="queue-empty" id="users-queue-empty">No accounts awaiting approval.</div>
+        </div>
+        <div class="admin-section">
+          <div class="section-heading"><div><p class="eyebrow">DEPOSIT BALANCE</p><h2>Deposits to review</h2></div><span class="count-pill" id="pending-deposit-count">0</span></div>
+          <div class="admin-queue" id="pending-deposits"></div><div class="queue-empty" id="deposits-queue-empty">No pending deposits.</div>
+        </div>
+        <div class="admin-section">
+          <div class="section-heading"><div><p class="eyebrow">EARNINGS BALANCE</p><h2>Withdrawals to review</h2></div><span class="count-pill" id="pending-withdrawal-count">0</span></div>
+          <div class="admin-queue" id="pending-withdrawals"></div><div class="queue-empty" id="withdrawals-queue-empty">No pending withdrawals.</div>
+        </div>
+        <button class="outline-wide" type="button" data-go="profile">Back to profile</button>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" id="bottom-nav" aria-label="Navigazione principale" hidden>
+      <button class="nav-item active" type="button" data-tab="home" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.8 12 3l9 7.8v9.1a1.1 1.1 0 0 1-1.1 1.1h-5.2v-6.4H9.3V21H4.1A1.1 1.1 0 0 1 3 19.9z"/></svg><span>Home</span></button>
+      <button class="nav-item" type="button" data-tab="catalog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm3 2v12h12V6zm2 2h8v2H8zm0 4h8v2H8z"/></svg><span>Plans</span></button>
+      <button class="nav-item" type="button" data-tab="investments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1m2 13h2v2H6zm0-4h2v2H6zm4 4h2v2h-2zm0-4h2v2h-2zm4 4h4v2h-4zm0-4h4v2h-4zm-8-5h12v2H6z"/></svg><span>Investments</span></button>
+      <button class="nav-item" type="button" data-tab="invites"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 15 8.2l6.8 1-4.9 4.8 1.2 6.8L12 17.6 5.9 20.8l1.2-6.8L2.2 9.2l6.8-1z"/></svg><span>Invites</span></button>
+      <button class="nav-item" type="button" data-tab="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9m0 2c-4.97 0-9 2.24-9 5v2h18v-2c0-2.76-4.03-5-9-5"/></svg><span>Profile</span></button>
+    </nav>
+
+    <dialog class="modal" id="deposit-dialog" aria-labelledby="deposit-title">
+      <form class="modal-card" id="deposit-form">
+        <button class="modal-close" type="button" data-close="deposit-dialog" aria-label="Close">×</button>
+        <p class="eyebrow">DEMO TRANSACTION</p><h2 id="deposit-title">Add deposit funds</h2>
+        <p class="modal-copy">Choose a network for this demo transaction. No USDT transfer will take place.</p>
+        <label for="deposit-network">Network</label>
+        <select id="deposit-network" required><option value="bep20">BNB Chain · BEP-20</option><option value="bitcoin">Bitcoin · USDT (test)</option><option value="trc20">TRON · TRC-20</option></select>
+        <label for="deposit-amount">Demo amount (USDT)</label>
+        <input id="deposit-amount" type="number" inputmode="decimal" min="0.000001" step="any" placeholder="Amount" required>
+        <label for="deposit-txhash">Transaction hash (demo)</label>
+        <input id="deposit-txhash" type="text" autocomplete="off" placeholder="Paste a hash to review" required>
+        <p class="form-error" id="deposit-error" role="alert"></p>
+        <button class="primary-button" type="submit">Submit for admin review</button>
+      </form>
+    </dialog>
+
+    <dialog class="modal" id="withdraw-dialog" aria-labelledby="withdraw-title">
+      <form class="modal-card" id="withdraw-form">
+        <button class="modal-close" type="button" data-close="withdraw-dialog" aria-label="Close">×</button>
+        <p class="eyebrow">DEMO TRANSACTION</p><h2 id="withdraw-title">Withdraw earnings</h2>
+        <p class="available-line">Available earnings: <b id="withdraw-available">0.00 USDT</b></p>
+        <label for="withdraw-network">Network</label>
+        <select id="withdraw-network" required><option value="bep20">BNB Chain · BEP-20</option><option value="bitcoin">Bitcoin · USDT (test)</option><option value="trc20">TRON · TRC-20</option></select>
+        <label for="withdraw-address">Destination address</label>
+        <input id="withdraw-address" type="text" autocomplete="off" placeholder="Demo address" required>
+        <label for="withdraw-amount">Amount (USDT)</label>
+        <input id="withdraw-amount" type="number" inputmode="decimal" min="0.000001" step="any" placeholder="Amount" required>
+        <p class="form-error" id="withdraw-error" role="alert"></p>
+        <button class="primary-button" type="submit">Submit demo withdrawal</button>
+        <p class="modal-footnote">Only the demo balance is updated. No payout is sent.</p>
+      </form>
+    </dialog>
+
+    <dialog class="modal" id="plan-dialog" aria-labelledby="plan-dialog-title">
+      <form class="modal-card" id="plan-form">
+        <button class="modal-close" type="button" data-close="plan-dialog" aria-label="Close">×</button>
+        <p class="eyebrow">DEMO INVESTMENT</p><h2 id="plan-dialog-title">Invest</h2>
+        <p class="plan-terms" id="plan-terms"></p>
+        <label for="invest-amount">Investment amount (USDT)</label>
+        <input id="invest-amount" type="number" inputmode="decimal" min="0.000001" step="any" placeholder="Amount" required>
+        <p class="available-line">Available deposit balance: <b id="invest-available">0.00 USDT</b></p>
+        <div class="estimate-line" id="plan-estimate">Estimated total return: 0.00 USDT</div>
+        <p class="form-error" id="plan-error" role="alert"></p>
+        <button class="primary-button" type="submit">Confirm demo plan</button>
+        <p class="modal-footnote">Unwithdrawn earnings compound daily. You can withdraw them anytime; principal returns to your deposit balance at maturity.</p>
+      </form>
+    </dialog>
+
+    <dialog class="modal" id="details-dialog" aria-labelledby="details-title">
+      <div class="modal-card detail-modal-card">
+        <button class="modal-close" type="button" data-close="details-dialog" aria-label="Close">×</button>
+        <p class="eyebrow" id="details-eyebrow">PLAN DETAILS · DEMO</p>
+        <h2 id="details-title">Plan details</h2>
+        <div class="details-overview" id="details-overview"></div>
+        <div class="allocation-heading"><b>Illustrative allocation</b><span>percentage</span></div>
+        <p class="allocation-intro" id="allocation-intro">Daily return estimates are shown by asset below.</p>
+        <div class="allocation-list" id="details-allocation"></div>
+        <p class="modal-footnote">Illustrative simulation only: the platform does not buy or hold these assets or track their market prices.</p>
+        <button class="primary-button" id="details-invest-button" type="button">Invest in this plan</button>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="wallet-dialog" aria-labelledby="wallet-title">
+      <form class="modal-card" id="wallet-form">
+        <button class="modal-close" type="button" data-close="wallet-dialog" aria-label="Close">×</button>
+        <p class="eyebrow">PROFILE SETTINGS</p><h2 id="wallet-title">Link a withdrawal wallet</h2>
+        <p class="modal-copy">Saved to this browser demo and used to prefill test withdrawal requests.</p>
+        <label for="wallet-network">Network</label>
+        <select id="wallet-network"><option value="bep20">BNB Chain · BEP-20</option><option value="bitcoin">Bitcoin · USDT (test)</option><option value="trc20">TRON · TRC-20</option></select>
+        <label for="wallet-address">Wallet address</label>
+        <input id="wallet-address" type="text" autocomplete="off" placeholder="Enter a test wallet address">
+        <button class="primary-button" type="submit">Save wallet</button>
+        <p class="modal-footnote">This demo does not verify ownership or send funds.</p>
+      </form>
+    </dialog>
+
+    <dialog class="modal" id="password-dialog" aria-labelledby="password-title">
+      <form class="modal-card" id="password-form">
+        <button class="modal-close" type="button" data-close="password-dialog" aria-label="Close">×</button>
+        <p class="eyebrow">PROFILE SETTINGS</p><h2 id="password-title">Change password</h2>
+        <label for="current-password">Current password</label>
+        <input id="current-password" type="password" autocomplete="current-password" required>
+        <label for="new-password">New password</label>
+        <input id="new-password" type="password" minlength="8" autocomplete="new-password" placeholder="At least 8 characters" required>
+        <label for="confirm-new-password">Confirm new password</label>
+        <input id="confirm-new-password" type="password" minlength="8" autocomplete="new-password" required>
+        <p class="form-error" id="password-error" role="alert"></p>
+        <button class="primary-button" type="submit">Update password</button>
+        <p class="modal-footnote">Demo account credentials are stored locally in this browser.</p>
+      </form>
+    </dialog>
+
+    <dialog class="modal" id="notifications-dialog" aria-labelledby="notifications-title">
+      <div class="modal-card detail-modal-card">
+        <button class="modal-close" type="button" data-close="notifications-dialog" aria-label="Close">×</button>
+        <p class="eyebrow">ACCOUNT UPDATES</p><h2 id="notifications-title">Notifications</h2>
+        <div class="activity-list" id="notification-list"></div>
+        <div class="empty-card compact-empty" id="notifications-empty"><b>You're all caught up</b><p>Account updates will appear here.</p></div>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="history-dialog" aria-labelledby="history-title">
+      <div class="modal-card detail-modal-card">
+        <button class="modal-close" type="button" data-close="history-dialog" aria-label="Close">×</button>
+        <p class="eyebrow">ACCOUNT ACTIVITY</p><h2 id="history-title">Full account history</h2>
+        <div class="history-list" id="full-history-list"></div>
+        <div class="empty-card compact-empty" id="full-history-empty" hidden><b>No account activity yet</b></div>
+      </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="./script.js"></script>
+
+</body>
+</html>
